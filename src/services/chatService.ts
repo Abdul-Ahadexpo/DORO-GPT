@@ -64,7 +64,7 @@ export class ChatService {
     // Store unknown question
     await this.storeUnknownQuestion(userMessage);
     
-    return "I don't know yet 😅. Admin will teach me soon.";
+    return "I don't know how to answer that now.. I'll learn it in a few minuits 😅";
   }
 
   private async storeUnknownQuestion(question: string) {
