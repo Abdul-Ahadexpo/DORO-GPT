@@ -8,13 +8,20 @@ interface ChatWindowProps {
 
 export function ChatWindow({ messages }: ChatWindowProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current && chatContainerRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-900 p-4 pt-20 pb-20">
+    <div 
+      ref={chatContainerRef}
+      className="flex-1 overflow-y-auto bg-slate-900 p-4 pt-20 pb-32"
+      style={{ height: 'calc(100vh - 160px)' }}
+    >
       <div className="max-w-4xl mx-auto">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
