@@ -20,7 +20,7 @@ export function QuickMessages({ onSendMessage }: QuickMessagesProps) {
   const visibleMessages = isExpanded ? quickMessages : quickMessages.slice(0, 3);
 
   return (
-    <div className="fixed bottom-20 left-0 right-0 z-30 px-4">
+    <div className="fixed bottom-20 left-0 right-0 z-40 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-slate-800/95 backdrop-blur-sm border border-slate-700 rounded-t-xl p-3 shadow-lg">
           <div className="flex items-center justify-between mb-2">
