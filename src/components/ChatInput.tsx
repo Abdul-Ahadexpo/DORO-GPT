@@ -25,7 +25,7 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-slate-800 border-t border-slate-700 p-4 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-800 border-t border-slate-700 p-4 shadow-lg">
       <div className="max-w-4xl mx-auto">
         <form onSubmit={handleSubmit} className="flex space-x-3">
           <input
