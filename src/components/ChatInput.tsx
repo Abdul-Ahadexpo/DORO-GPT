@@ -25,7 +25,7 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="bg-white border-t border-gray-200 p-4 shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-slate-800 border-t border-slate-700 p-4 shadow-lg">
       <div className="max-w-4xl mx-auto">
         <form onSubmit={handleSubmit} className="flex space-x-3">
           <input
@@ -35,12 +35,12 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type a message…"
             disabled={disabled}
-            className="flex-1 border border-gray-300 rounded-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 border border-slate-600 rounded-full px-4 py-3 bg-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
           />
           <button
             type="submit"
             disabled={disabled || !message.trim()}
-            className="bg-gradient-to-r from-purple-500 to-blue-500 text-white p-3 rounded-full hover:from-purple-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+            className="bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
           >
             <Send size={20} />
           </button>

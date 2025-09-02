@@ -1,11 +1,17 @@
 import { database } from '../config/firebase';
 import { ref, push, onValue, set, get, serverTimestamp } from 'firebase/database';
 import { Message, BotResponse, UnknownQuestion } from '../types';
+import { DeviceService } from './deviceService';
 
 export class ChatService {
-  private messagesRef = ref(database, 'messages');
+  private getMessagesRef() {
+    const deviceId = DeviceService.getDeviceId();
+    return ref(database, `messages/${deviceId}`);
+  }
+  
   private responsesRef = ref(database, 'responses');
   private unknownQuestionsRef = ref(database, 'unknown_questions');
+  private quickMessagesRef = ref(database, 'quick_messages');
 
   async initializeDefaultResponses() {
     const snapshot = await get(this.responsesRef);
@@ -32,7 +38,7 @@ export class ChatService {
       timestamp: Date.now()
     };
 
-    const newMessageRef = await push(this.messagesRef, message);
+    const newMessageRef = await push(this.getMessagesRef(), message);
     return newMessageRef.key!;
   }
 
@@ -75,14 +81,14 @@ export class ChatService {
       text: question,
       timestamp: existing?.timestamp || Date.now(),
       count: (existing?.count || 0) + 1,
-      userID: 'anonymous'
+      userID: DeviceService.getDeviceId()
     };
 
     await set(unknownRef, unknownQuestion);
   }
 
   onMessagesChange(callback: (messages: Message[]) => void) {
-    return onValue(this.messagesRef, (snapshot) => {
+    return onValue(this.getMessagesRef(), (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const messages = Object.entries(data).map(([id, message]: [string, any]) => ({
@@ -158,7 +164,34 @@ export class ChatService {
   }
 
   async clearAllMessages() {
-    await set(this.messagesRef, null);
+    await set(this.getMessagesRef(), null);
+  }
+
+  onQuickMessagesChange(callback: (messages: string[]) => void) {
+    return onValue(this.quickMessagesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const messages = Object.values(data) as string[];
+        callback(messages);
+      } else {
+        callback([]);
+      }
+    });
+  }
+
+  async addQuickMessage(message: string) {
+    await push(this.quickMessagesRef, message);
+  }
+
+  async deleteQuickMessage(index: number) {
+    const snapshot = await get(this.quickMessagesRef);
+    const data = snapshot.val();
+    if (data) {
+      const keys = Object.keys(data);
+      if (keys[index]) {
+        await set(ref(database, `quick_messages/${keys[index]}`), null);
+      }
+    }
   }
 }
 

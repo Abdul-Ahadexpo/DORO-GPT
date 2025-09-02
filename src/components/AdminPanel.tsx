@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus, Trash2, MessageCircle, Brain, Users, Download, Upload, Edit2, Save } from 'lucide-react';
+import { X, Plus, Trash2, MessageCircle, Brain, Users, Download, Upload, Edit2, Save, Zap } from 'lucide-react';
 import { chatService } from '../services/chatService';
 import { FileService } from '../services/fileService';
 import { FileUploadHelp } from './FileUploadHelp';
@@ -11,12 +11,14 @@ interface AdminPanelProps {
 }
 
 export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
-  const [activeTab, setActiveTab] = useState<'responses' | 'unknown' | 'messages'>('responses');
+  const [activeTab, setActiveTab] = useState<'responses' | 'unknown' | 'messages' | 'quick'>('responses');
   const [responses, setResponses] = useState<BotResponse>({});
   const [unknownQuestions, setUnknownQuestions] = useState<UnknownQuestion[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [quickMessages, setQuickMessages] = useState<string[]>([]);
   const [newQuestion, setNewQuestion] = useState('');
   const [newResponse, setNewResponse] = useState('');
+  const [newQuickMessage, setNewQuickMessage] = useState('');
   const [editingResponse, setEditingResponse] = useState<string | null>(null);
   const [editQuestion, setEditQuestion] = useState('');
   const [editResponseText, setEditResponseText] = useState('');
@@ -28,11 +30,13 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
     const unsubscribeResponses = chatService.onResponsesChange(setResponses);
     const unsubscribeUnknown = chatService.onUnknownQuestionsChange(setUnknownQuestions);
     const unsubscribeMessages = chatService.onMessagesChange(setMessages);
+    const unsubscribeQuick = chatService.onQuickMessagesChange(setQuickMessages);
 
     return () => {
       unsubscribeResponses();
       unsubscribeUnknown();
       unsubscribeMessages();
+      unsubscribeQuick();
     };
   }, [isOpen]);
 
@@ -44,6 +48,18 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
     }
   };
 
+  const handleAddQuickMessage = async () => {
+    if (newQuickMessage.trim()) {
+      await chatService.addQuickMessage(newQuickMessage.trim());
+      setNewQuickMessage('');
+    }
+  };
+
+  const handleDeleteQuickMessage = async (index: number) => {
+    if (confirm('Are you sure you want to delete this quick message?')) {
+      await chatService.deleteQuickMessage(index);
+    }
+  };
   const handleDeleteResponse = async (question: string) => {
     if (confirm('Are you sure you want to delete this response?')) {
       await chatService.deleteResponse(question);
@@ -150,6 +166,15 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
           >
             <Users size={20} />
             <span>Messages ({messages.length})</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('quick')}
+            className={`flex-1 p-4 flex items-center justify-center space-x-2 transition-colors ${
+              activeTab === 'quick' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'
+            }`}
+          >
+            <Zap size={20} />
+            <span>Quick ({quickMessages.length})</span>
           </button>
         </div>
 
@@ -331,6 +356,48 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
                     <p className="text-white text-sm">{message.text}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'quick' && (
+            <div className="space-y-6">
+              <div className="bg-gray-800 rounded-lg p-4">
+                <h3 className="text-white font-semibold mb-4">Add Quick Message</h3>
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Quick message text"
+                    value={newQuickMessage}
+                    onChange={(e) => setNewQuickMessage(e.target.value)}
+                    className="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  />
+                  <button
+                    onClick={handleAddQuickMessage}
+                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+                  >
+                    <Plus size={16} />
+                    <span>Add Quick Message</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-white font-semibold">Current Quick Messages</h3>
+                {quickMessages.map((message, index) => (
+                  <div key={index} className="bg-gray-800 rounded-lg p-4 flex justify-between items-center">
+                    <span className="text-white">{message}</span>
+                    <button
+                      onClick={() => handleDeleteQuickMessage(index)}
+                      className="text-red-400 hover:text-red-300 transition-colors"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+                {quickMessages.length === 0 && (
+                  <p className="text-gray-400 text-center py-8">No quick messages yet!</p>
+                )}
               </div>
             </div>
           )}

@@ -23,14 +23,14 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
       <div
         className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl rounded-2xl px-4 py-3 shadow-md ${
           isUser
-            ? 'bg-gradient-to-br from-purple-500 to-blue-500 text-white'
-            : 'bg-white text-gray-800 border border-gray-200'
+            ? 'bg-purple-600 text-white'
+            : 'bg-slate-800 text-white border border-slate-700'
         }`}
       >
         <p className="text-sm leading-relaxed">{message.text}</p>
         <p
           className={`text-xs mt-2 ${
-            isUser ? 'text-purple-100' : 'text-gray-500'
+            isUser ? 'text-purple-200' : 'text-slate-400'
           }`}
         >
           {time}
