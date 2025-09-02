@@ -79,5 +79,20 @@ body {
   /* Ensure fixed elements stay in place on mobile */
   .fixed {
     position: fixed !important;
+    z-index: 1000;
+  }
+  
+  /* Prevent scrolling issues on mobile */
+  body {
+    position: relative;
+    overflow-x: hidden;
+    height: 100vh;
+    overflow-y: hidden;
+  }
+  
+  /* Ensure proper scrolling on mobile */
+  #root {
+    height: 100vh;
+    overflow: hidden;
   }
 }
