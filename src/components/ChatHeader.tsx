@@ -7,7 +7,7 @@ interface ChatHeaderProps {
 
 export function ChatHeader({ onAdminClick }: ChatHeaderProps) {
   return (
-    <div className="fixed top-0 left-0 right-0 z-40 bg-slate-800 text-white p-4 shadow-lg border-b border-slate-700">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-slate-800 text-white p-4 shadow-lg border-b border-slate-700">
       <div className="flex items-center justify-between max-w-4xl mx-auto">
         <div className="flex items-center space-x-3">
           <div className="bg-purple-500/20 p-2 rounded-full">
