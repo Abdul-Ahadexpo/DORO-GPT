@@ -16,7 +16,7 @@ export function AdminLogin({ onLogin, isOpen, onClose }: AdminLoginProps) {
     e.preventDefault();
     
     // Simple password check - in production, use proper authentication
-    if (password === 'admin123') {
+    if (password === '69') {
       onLogin();
       setPassword('');
       setError('');
@@ -67,7 +67,7 @@ export function AdminLogin({ onLogin, isOpen, onClose }: AdminLoginProps) {
               </button>
             </div>
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-            <p className="text-slate-400 text-xs mt-2">Default password: admin123</p>
+           
           </div>
 
           <button
