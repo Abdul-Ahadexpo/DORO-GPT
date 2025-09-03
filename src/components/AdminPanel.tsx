@@ -223,7 +223,7 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
                     value={newResponse}
                     onChange={(e) => setNewResponse(e.target.value)}
                     className="w-full p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:outline-none resize-none"
-                    rows={3}
+                    rows={4}
                   />
                   <button
                     onClick={handleAddResponse}
@@ -253,7 +253,7 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
                           onChange={(e) => setEditResponseText(e.target.value)}
                           className="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:outline-none resize-none"
                           placeholder="Response"
-                          rows={3}
+                          rows={4}
                         />
                         <div className="flex space-x-2">
                           <button
@@ -291,6 +291,7 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
                           </div>
                         </div>
                         <p className="text-gray-300">{response}</p>
+                        <div className="text-gray-300 whitespace-pre-wrap">{response}</div>
                       </>
                     )}
                   </div>

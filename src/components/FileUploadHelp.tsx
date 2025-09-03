@@ -8,7 +8,8 @@ export function FileUploadHelp() {
     "hello": "Hello! How can I help you today?",
     "what is your name": "I'm Doro GPT, your learning assistant!",
     "how are you": "I'm doing great! Thanks for asking.",
-    "goodbye": "Goodbye! Have a wonderful day!"
+    "goodbye": "Goodbye! Have a wonderful day!",
+    "example with line breaks": "This is line 1\nThis is line 2\nThis is line 3"
   };
 
   return (
@@ -47,6 +48,8 @@ export function FileUploadHelp() {
                 <p>• Questions will be automatically normalized to lowercase</p>
                 <p>• Existing responses with same questions will be overwritten</p>
                 <p>• Invalid entries will be skipped</p>
+                <p>• Use \n for line breaks in responses</p>
+                <p>• Spaces and formatting will be preserved in answers</p>
               </div>
             </div>
           </div>

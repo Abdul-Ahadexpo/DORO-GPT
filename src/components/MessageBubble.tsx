@@ -46,6 +46,16 @@ interface MessageBubbleProps {
   isLatest: boolean;
 }
 
+// Function to preserve line breaks and convert them to JSX
+function preserveLineBreaks(text: string): React.ReactNode[] {
+  return text.split('\n').map((line, index, array) => (
+    <React.Fragment key={index}>
+      {makeLinksClickable(line)}
+      {index < array.length - 1 && <br />}
+    </React.Fragment>
+  ));
+}
+
 export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
   const isUser = message.sender === 'user';
   const time = new Date(message.timestamp).toLocaleTimeString('en-US', {
@@ -79,7 +89,7 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
       >
         {textWithoutImages && (
           <p className="text-sm leading-relaxed mb-2">
-            {makeLinksClickable(textWithoutImages)}
+            {preserveLineBreaks(textWithoutImages)}
           </p>
         )}
         

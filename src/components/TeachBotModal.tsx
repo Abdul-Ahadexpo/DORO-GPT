@@ -71,9 +71,9 @@ export function TeachBotModal({ isOpen, question, onClose, onTeach }: TeachBotMo
               <textarea
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
-                placeholder="Type the correct answer here..."
+                placeholder="Type the correct answer here...\n\nTip: Press Enter for line breaks - they will be preserved in the response!"
                 className="w-full p-3 border border-slate-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400 resize-none"
-                rows={4}
+                rows={6}
                 disabled={isSubmitting}
               />
             </div>
