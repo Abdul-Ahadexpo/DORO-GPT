@@ -1,6 +1,29 @@
 import React from 'react';
 import { Message } from '../types';
 
+// Function to detect and make URLs clickable
+function makeLinksClickable(text: string): React.ReactNode[] {
+  const urlRegex = /(https?:\/\/[^\s]+)/gi;
+  const parts = text.split(urlRegex);
+  
+  return parts.map((part, index) => {
+    if (urlRegex.test(part)) {
+      return (
+        <a
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-300 hover:text-blue-200 underline break-all"
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+}
+
 // Function to detect if text contains image URLs
 function extractImageUrls(text: string): string[] {
   const imageUrlRegex = /https?:\/\/[^\s]+\.(jpg|jpeg|png|gif|webp|svg)(\?[^\s]*)?/gi;
@@ -55,7 +78,9 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
         }`}
       >
         {textWithoutImages && (
-          <p className="text-sm leading-relaxed mb-2">{textWithoutImages}</p>
+          <p className="text-sm leading-relaxed mb-2">
+            {makeLinksClickable(textWithoutImages)}
+          </p>
         )}
         
         {imageUrls.length > 0 && (

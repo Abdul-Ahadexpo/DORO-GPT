@@ -2,6 +2,7 @@ import { database } from '../config/firebase';
 import { ref, push, onValue, set, get, serverTimestamp } from 'firebase/database';
 import { Message, BotResponse, UnknownQuestion } from '../types';
 import { DeviceService } from './deviceService';
+import { CalculationService } from './calculationService';
 
 export class ChatService {
   private getMessagesRef() {
@@ -44,6 +45,14 @@ export class ChatService {
 
   async getBotResponse(userMessage: string): Promise<string> {
     const normalizedMessage = userMessage.toLowerCase().trim();
+    
+    // Check if it's a calculation question first
+    if (CalculationService.isCalculationQuestion(userMessage)) {
+      const result = CalculationService.evaluateExpression(userMessage);
+      if (result !== null) {
+        return `The answer is ${result} 🧮`;
+      }
+    }
     
     // Get responses from Firebase
     const snapshot = await get(this.responsesRef);

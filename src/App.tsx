@@ -4,11 +4,20 @@ import { ChatWindow } from './components/ChatWindow';
 import { ChatInput } from './components/ChatInput';
 import { AdminPanel } from './components/AdminPanel';
 import { AdminLogin } from './components/AdminLogin';
+import { TeachBotModal } from './components/TeachBotModal';
 import { useChat } from './hooks/useChat';
 import { QuickMessages } from './components/QuickMessages';
 
 function App() {
-  const { messages, sendMessage, isLoading } = useChat();
+  const { 
+    messages, 
+    sendMessage, 
+    isLoading, 
+    showTeachModal, 
+    lastUnknownQuestion, 
+    onCloseTeachModal, 
+    onTeachBot 
+  } = useChat();
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
 
@@ -40,6 +49,13 @@ function App() {
       <AdminPanel
         isOpen={showAdminPanel}
         onClose={() => setShowAdminPanel(false)}
+      />
+
+      <TeachBotModal
+        isOpen={showTeachModal}
+        question={lastUnknownQuestion}
+        onClose={onCloseTeachModal}
+        onTeach={onTeachBot}
       />
 
       {isLoading && (

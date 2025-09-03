@@ -5,6 +5,8 @@ import { Message } from '../types';
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showTeachModal, setShowTeachModal] = useState(false);
+  const [lastUnknownQuestion, setLastUnknownQuestion] = useState('');
 
   useEffect(() => {
     // Initialize default responses
@@ -25,6 +27,12 @@ export function useChat() {
       // Get bot response
       const botResponse = await chatService.getBotResponse(text);
       
+      // Check if it's an unknown response
+      if (botResponse.includes("I don't know how to answer that now")) {
+        setLastUnknownQuestion(text);
+        setShowTeachModal(true);
+      }
+      
       // Send bot message after a short delay for better UX
       setTimeout(async () => {
         await chatService.sendMessage(botResponse, 'bot');
@@ -36,9 +44,19 @@ export function useChat() {
     }
   };
 
+  const handleTeachBot = async (question: string, answer: string) => {
+    await chatService.addResponse(question, answer);
+    setShowTeachModal(false);
+    setLastUnknownQuestion('');
+  };
+
   return {
     messages,
     sendMessage,
-    isLoading
+    isLoading,
+    showTeachModal,
+    lastUnknownQuestion,
+    onCloseTeachModal: () => setShowTeachModal(false),
+    onTeachBot: handleTeachBot
   };
 }
