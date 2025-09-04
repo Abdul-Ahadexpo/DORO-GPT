@@ -14,6 +14,45 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
     if (inputRef.current) {
       inputRef.current.focus();
     }
+
+    // Auto-focus on keypress for desktop only
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Only on desktop (screen width > 768px)
+      if (window.innerWidth <= 768) return;
+      
+      // Don't interfere if user is already typing in an input/textarea
+      const activeElement = document.activeElement;
+      if (activeElement && (
+        activeElement.tagName === 'INPUT' || 
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.getAttribute('contenteditable') === 'true'
+      )) {
+        return;
+      }
+
+      // Don't interfere with keyboard shortcuts
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      
+      // Don't interfere with special keys
+      if (e.key.length > 1 && !['Backspace', 'Delete'].includes(e.key)) return;
+
+      // Focus the input and let the character be typed
+      if (inputRef.current && !disabled) {
+        inputRef.current.focus();
+        
+        // If it's a printable character, add it to the input
+        if (e.key.length === 1) {
+          setMessage(prev => prev + e.key);
+          e.preventDefault();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
