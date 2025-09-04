@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Bot } from 'lucide-react';
 import { Message } from '../types';
 import { MessageBubble } from './MessageBubble';
 
@@ -19,16 +20,24 @@ export function ChatWindow({ messages }: ChatWindowProps) {
   return (
     <div 
       ref={chatContainerRef}
-      className="flex-1 overflow-y-auto bg-slate-900 p-4 pt-20 pb-32"
-      style={{ height: 'calc(100vh - 160px)' }}
+      className="flex-1 overflow-y-auto bg-gradient-to-b from-slate-900 to-slate-800 p-2 md:p-4 pt-16 md:pt-20 pb-28 md:pb-32"
+      style={{ height: 'calc(100vh - 140px)', scrollBehavior: 'smooth' }}
     >
       <div className="max-w-4xl mx-auto">
         {messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center text-slate-400">
-              <div className="bg-slate-800/80 rounded-2xl p-8 shadow-lg border border-slate-700">
-                <h3 className="text-lg font-semibold mb-2 text-white">Welcome to SenTorial-CHAT!</h3>
-                <p className="text-sm">Start a conversation by typing a message below.</p>
+          <div className="flex items-center justify-center h-full animate-fade-in">
+            <div className="text-center text-slate-400 max-w-md mx-auto px-4">
+              <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-xl border border-slate-700 hover:border-slate-600 transition-all duration-300 hover-lift animate-bounce-in">
+                <div className="bg-purple-500/20 p-3 rounded-full w-fit mx-auto mb-4 animate-pulse-slow">
+                  <Bot size={32} className="text-purple-400" />
+                </div>
+                <h3 className="text-lg md:text-xl font-semibold mb-3 text-white">Welcome to SenTorial-CHAT!</h3>
+                <p className="text-sm md:text-base text-slate-300 leading-relaxed">Start a conversation by typing a message below.</p>
+                <div className="mt-4 text-xs text-slate-400">
+                  <p>✨ I can solve math problems</p>
+                  <p>🔗 I can handle clickable links</p>
+                  <p>🧠 I learn from your teachings</p>
+                </div>
               </div>
             </div>
           </div>

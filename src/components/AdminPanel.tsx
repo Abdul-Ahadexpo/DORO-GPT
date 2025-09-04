@@ -127,58 +127,58 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-gray-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Admin Panel</h2>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-2 md:p-4 z-50 animate-fade-in">
+      <div className="bg-gray-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[95vh] md:max-h-[90vh] overflow-hidden animate-scale-in">
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 md:p-6 flex items-center justify-between">
+          <h2 className="text-xl md:text-2xl font-bold">Admin Panel</h2>
           <button
             onClick={onClose}
-            className="bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors"
+            className="bg-white/20 hover:bg-white/40 p-1.5 md:p-2 rounded-full transition-all duration-200 hover-lift focus-ring"
           >
             <X size={20} />
           </button>
         </div>
 
-        <div className="flex border-b border-gray-700">
+        <div className="flex border-b border-gray-700 overflow-x-auto">
           <button
             onClick={() => setActiveTab('responses')}
-            className={`flex-1 p-4 flex items-center justify-center space-x-2 transition-colors ${
+            className={`flex-1 min-w-0 p-2 md:p-4 flex items-center justify-center space-x-1 md:space-x-2 transition-all duration-200 hover-lift ${
               activeTab === 'responses' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'
             }`}
           >
-            <Brain size={20} />
-            <span>Responses</span>
+            <Brain size={16} className="md:w-5 md:h-5" />
+            <span className="text-xs md:text-sm">Responses</span>
           </button>
           <button
             onClick={() => setActiveTab('unknown')}
-            className={`flex-1 p-4 flex items-center justify-center space-x-2 transition-colors ${
+            className={`flex-1 min-w-0 p-2 md:p-4 flex items-center justify-center space-x-1 md:space-x-2 transition-all duration-200 hover-lift ${
               activeTab === 'unknown' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'
             }`}
           >
-            <MessageCircle size={20} />
-            <span>Unknown ({unknownQuestions.length})</span>
+            <MessageCircle size={16} className="md:w-5 md:h-5" />
+            <span className="text-xs md:text-sm">Unknown ({unknownQuestions.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('messages')}
-            className={`flex-1 p-4 flex items-center justify-center space-x-2 transition-colors ${
+            className={`flex-1 min-w-0 p-2 md:p-4 flex items-center justify-center space-x-1 md:space-x-2 transition-all duration-200 hover-lift ${
               activeTab === 'messages' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'
             }`}
           >
-            <Users size={20} />
-            <span>Messages ({messages.length})</span>
+            <Users size={16} className="md:w-5 md:h-5" />
+            <span className="text-xs md:text-sm">Messages ({messages.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('quick')}
-            className={`flex-1 p-4 flex items-center justify-center space-x-2 transition-colors ${
+            className={`flex-1 min-w-0 p-2 md:p-4 flex items-center justify-center space-x-1 md:space-x-2 transition-all duration-200 hover-lift ${
               activeTab === 'quick' ? 'bg-purple-600 text-white' : 'text-gray-300 hover:text-white'
             }`}
           >
-            <Zap size={20} />
-            <span>Quick ({quickMessages.length})</span>
+            <Zap size={16} className="md:w-5 md:h-5" />
+            <span className="text-xs md:text-sm">Quick ({quickMessages.length})</span>
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto max-h-[60vh]">
+        <div className="p-3 md:p-6 overflow-y-auto max-h-[70vh] md:max-h-[60vh]">
           {activeTab === 'responses' && (
             <div className="space-y-6">
               <div className="flex flex-wrap gap-3 mb-6">

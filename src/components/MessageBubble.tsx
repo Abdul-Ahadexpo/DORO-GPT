@@ -76,31 +76,31 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
 
   return (
     <div
-      className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4 ${
-        isLatest ? 'animate-slide-in' : ''
+      className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-3 md:mb-4 px-2 md:px-0 ${
+        isLatest ? (isUser ? 'animate-slide-in-right' : 'animate-slide-in-left') : ''
       }`}
     >
       <div
-        className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl rounded-2xl px-4 py-3 shadow-md ${
+        className={`max-w-[85%] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl rounded-2xl px-3 md:px-4 py-2 md:py-3 shadow-lg hover:shadow-xl transition-all duration-200 hover-lift ${
           isUser
-            ? 'bg-purple-600 text-white'
-            : 'bg-slate-800 text-white border border-slate-700'
+            ? 'bg-gradient-to-br from-purple-600 to-purple-700 text-white'
+            : 'bg-gradient-to-br from-slate-800 to-slate-700 text-white border border-slate-600'
         }`}
       >
         {textWithoutImages && (
-          <p className="text-sm leading-relaxed mb-2">
+          <p className="text-sm md:text-base leading-relaxed mb-2 whitespace-pre-wrap">
             {preserveLineBreaks(textWithoutImages)}
           </p>
         )}
         
         {imageUrls.length > 0 && (
-          <div className="space-y-2">
+          <div className="space-y-2 animate-scale-in">
             {imageUrls.map((imageUrl, index) => (
-              <div key={index} className="relative">
+              <div key={index} className="relative group">
                 <img
                   src={imageUrl}
                   alt="Shared image"
-                  className="w-full max-w-full h-auto rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow duration-200"
+                  className="w-full max-w-full h-auto rounded-lg shadow-sm cursor-pointer hover:shadow-lg transition-all duration-300 group-hover:scale-105"
                   style={{ maxHeight: '300px', objectFit: 'cover' }}
                   onClick={() => window.open(imageUrl, '_blank')}
                   onError={(e) => {
@@ -119,8 +119,8 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
         )}
         
         <p
-          className={`text-xs mt-2 ${
-            isUser ? 'text-purple-200' : 'text-slate-400'
+          className={`text-xs mt-1 md:mt-2 opacity-75 ${
+            isUser ? 'text-purple-100' : 'text-slate-300'
           }`}
         >
           {time}
