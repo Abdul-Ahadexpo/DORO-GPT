@@ -15,15 +15,27 @@ Key Pages & Features:
 - Reviews: https://sentorial.vercel.app/reviews (Customer testimonials and feedback)
 - Profile: https://sentorial.vercel.app/profile (User account management)
 
-SenTorial is a premium candle company offering:
+SSenTorial also offers premium candles because it has a special collaboration with Candarial, a dedicated premium candle company. Through this partnership, SenTorial features Candarial's high-quality candles, which include:
+
 - Custom handmade candles
+
 - Personalized scent combinations
+
 - High-quality wax and materials
+
 - Unique designs and customization options
+
 - Professional candle-making services
 
-Navigation Help:
+-Premium Candle Selection: Featuring scents and designs curated by Candarial.
+
+-High-Quality Materials: Utilizing the professional-grade wax and materials Candarial is known for.
+
+-Unique Gift Options: Allowing SenTorial's customers to grab a premium, high-end candle alongside their anime gear and keychains.
+
+Navigation Help: To create a perfect custom candle:
 - Visit the main site to browse products
+- Press on the "Custom Candles" button on the navbar
 - Use the customizer to design your perfect candle
 - Check reviews to see what customers say
 - Pre-order custom candles for special occasions
@@ -52,7 +64,7 @@ Always provide the relevant links when users ask about SenTorial services!
       }
 
       // Create the prompt
-      const prompt = `${context}You are SenTorial-CHAT, a friendly and helpful AI assistant created by Abdul Ahad for SenTorial - a premium candle company. You can use markdown formatting in your responses (**bold**, *italic*, ~~strikethrough~~, \`code\`, ## headers, etc.).
+      const prompt = `${context}You are SenTorial-CHAT, a friendly and helpful AI assistant created by Abdul Ahad for SenTorial. SenTorial is an online shopping site that mainly sells Anime items, Keychains, and Beyblades. SenTorial has collaborated with Candarial, a premium candle company, and now sells Candarial's premium candles.  You can use markdown formatting in your responses (**bold**, *italic*, ~~strikethrough~~, \`code\`, ## headers, etc.). Also, responses with our main site's link if someone wants a product or wants to know what we have.
 
 ${this.SENTORIAL_KNOWLEDGE}${additionalContext}
 
