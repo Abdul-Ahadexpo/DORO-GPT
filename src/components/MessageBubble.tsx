@@ -81,27 +81,27 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
       }`}
     >
       <div
-        className={`max-w-[85%] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl rounded-2xl px-3 md:px-4 py-2 md:py-3 shadow-lg hover:shadow-xl transition-all duration-200 hover-lift ${
+        className={`max-w-[90%] sm:max-w-[80%] md:max-w-md lg:max-w-lg xl:max-w-xl rounded-2xl px-3 sm:px-4 py-2 sm:py-3 shadow-lg hover:shadow-xl transition-all duration-200 hover-lift ${
           isUser
             ? 'bg-gradient-to-br from-purple-600 to-purple-700 text-white'
             : 'bg-gradient-to-br from-slate-800 to-slate-700 text-white border border-slate-600'
         }`}
       >
         {textWithoutImages && (
-          <p className="text-sm md:text-base leading-relaxed mb-2 whitespace-pre-wrap">
+          <p className="text-sm sm:text-base leading-relaxed mb-1 sm:mb-2 whitespace-pre-wrap break-words">
             {preserveLineBreaks(textWithoutImages)}
           </p>
         )}
         
         {imageUrls.length > 0 && (
-          <div className="space-y-2 animate-scale-in">
+          <div className="space-y-1 sm:space-y-2 animate-scale-in">
             {imageUrls.map((imageUrl, index) => (
               <div key={index} className="relative group">
                 <img
                   src={imageUrl}
                   alt="Shared image"
                   className="w-full max-w-full h-auto rounded-lg shadow-sm cursor-pointer hover:shadow-lg transition-all duration-300 group-hover:scale-105"
-                  style={{ maxHeight: '300px', objectFit: 'cover' }}
+                  style={{ maxHeight: '250px', objectFit: 'cover' }}
                   onClick={() => window.open(imageUrl, '_blank')}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -119,7 +119,7 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
         )}
         
         <p
-          className={`text-xs mt-1 md:mt-2 opacity-75 ${
+          className={`text-xs mt-1 sm:mt-2 opacity-75 ${
             isUser ? 'text-purple-100' : 'text-slate-300'
           }`}
         >

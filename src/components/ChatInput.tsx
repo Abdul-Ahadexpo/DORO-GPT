@@ -15,10 +15,10 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
       inputRef.current.focus();
     }
 
-    // Auto-focus on keypress for desktop only
+    // Auto-focus on keypress for desktop only (not mobile)
     const handleKeyPress = (e: KeyboardEvent) => {
-      // Only on desktop (screen width > 768px)
-      if (window.innerWidth <= 768) return;
+      // Only on desktop (screen width > 640px) and not touch devices
+      if (window.innerWidth <= 640 || 'ontouchstart' in window) return;
       
       // Don't interfere if user is already typing in an input/textarea
       const activeElement = document.activeElement;
@@ -53,7 +53,7 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, []);
+  }, [disabled]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,9 +64,9 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-800/95 backdrop-blur-md border-t border-slate-700 p-3 md:p-4 shadow-lg animate-slide-in">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-slate-800/95 backdrop-blur-md border-t border-slate-700 p-2 sm:p-3 md:p-4 shadow-lg animate-slide-in">
       <div className="max-w-4xl mx-auto">
-        <form onSubmit={handleSubmit} className="flex space-x-2 md:space-x-3">
+        <form onSubmit={handleSubmit} className="flex space-x-2 sm:space-x-2 md:space-x-3">
           <input
             ref={inputRef}
             type="text"
@@ -74,14 +74,15 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type a message…"
             disabled={disabled}
-            className="flex-1 border border-slate-600 rounded-full px-3 md:px-4 py-2 md:py-3 bg-slate-700 text-white placeholder-slate-400 focus-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 text-sm md:text-base"
+            className="flex-1 border border-slate-600 rounded-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-700 text-white placeholder-slate-400 focus-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 text-base min-h-[44px]"
+            style={{ fontSize: '16px' }}
           />
           <button
             type="submit"
             disabled={disabled || !message.trim()}
-            className="bg-purple-600 hover:bg-purple-700 text-white p-2 md:p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl hover-lift focus-ring"
+            className="bg-purple-600 hover:bg-purple-700 text-white p-2.5 sm:p-3 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl hover-lift focus-ring min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
-            <Send size={16} className="md:w-5 md:h-5" />
+            <Send size={18} className="sm:w-5 sm:h-5" />
           </button>
         </form>
       </div>
