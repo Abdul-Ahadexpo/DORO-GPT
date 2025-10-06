@@ -16,15 +16,15 @@ export function ChatHeader({ onAdminClick }: ChatHeaderProps) {
           <div>
             <h1 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold animate-fade-in">SenTorial-CHAT</h1>
             <p className="text-slate-300 text-xs sm:text-xs md:text-sm animate-fade-in flex items-center space-x-1">
-              <span>✨ Powered by Gemini AI •</span>
-              <span className="hidden sm:inline">Made By{" "}</span>
+           
+              <span>Made By{" "}</span>
               <a 
                 href="https://www.facebook.com/Nazim.AbdulAhad" 
                 className="text-purple-400 hover:text-purple-300 underline transition-colors duration-200"
                 target="_blank" 
                 rel="noopener noreferrer"
               >
-                <span className="sm:hidden">AA</span>
+                <span className="sm:hidden">Abdul Ahad</span>
                 <span className="hidden sm:inline">Abdul Ahad</span>
               </a>
             </p>
