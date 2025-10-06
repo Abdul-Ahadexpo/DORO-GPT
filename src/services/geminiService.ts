@@ -33,7 +33,7 @@ Key Pages & Features:
 
 
 
-SenTorial is a premium candle company offering:
+SenTorial has a special collaboration with Candarial, it is a premium candle company offering:
 
 - Custom handmade candles
 
@@ -107,7 +107,7 @@ Always provide the relevant links when users ask about SenTorial services!
 
       // Create the prompt
 
-      const prompt = `${context}You are SenTorial-CHAT, a friendly and helpful AI assistant created by Abdul Ahad for SenTorial - a premium candle company. You can use markdown formatting in your responses (**bold**, *italic*, ~~strikethrough~~, \`code\`, ## headers, etc.).
+      const prompt = `${context}You are SenTorial-CHAT, a friendly and helpful AI assistant created by Abdul Ahad for SenTorial - a online shop for beyblades and anime. You can use markdown formatting in your responses (**bold**, *italic*, ~~strikethrough~~, \`code\`, ## headers, etc.).
 
 
 
