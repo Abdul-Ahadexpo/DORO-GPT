@@ -3,6 +3,7 @@ import { ref, push, onValue, set, get, serverTimestamp } from 'firebase/database
 import { Message, BotResponse, UnknownQuestion } from '../types';
 import { DeviceService } from './deviceService';
 import { CalculationService } from './calculationService';
+import { GeminiService } from './geminiService';
 
 export class ChatService {
   private getMessagesRef() {
@@ -43,14 +44,26 @@ export class ChatService {
     return newMessageRef.key!;
   }
 
+  private conversationHistory: string[] = [];
+
   async getBotResponse(userMessage: string): Promise<string> {
     const normalizedMessage = userMessage.toLowerCase().trim();
+    
+    // Add user message to conversation history
+    this.conversationHistory.push(`User: ${userMessage}`);
+    
+    // Keep only last 10 messages for context
+    if (this.conversationHistory.length > 10) {
+      this.conversationHistory = this.conversationHistory.slice(-10);
+    }
     
     // Check if it's a calculation question first
     if (CalculationService.isCalculationQuestion(userMessage)) {
       const result = CalculationService.evaluateExpression(userMessage);
       if (result !== null) {
-        return `The answer is ${result} 🧮`;
+        const response = `The answer is ${result} 🧮`;
+        this.conversationHistory.push(`Bot: ${response}`);
+        return response;
       }
     }
     
@@ -60,20 +73,45 @@ export class ChatService {
 
     // Check for exact match first
     if (responses[normalizedMessage]) {
-      return responses[normalizedMessage];
+      const response = responses[normalizedMessage];
+      this.conversationHistory.push(`Bot: ${response}`);
+      return response;
     }
 
     // Check for partial matches
     for (const key in responses) {
       if (normalizedMessage.includes(key) || key.includes(normalizedMessage)) {
-        return responses[key];
+        const response = responses[key];
+        this.conversationHistory.push(`Bot: ${response}`);
+        return response;
       }
     }
 
+    // Try Gemini AI for intelligent response
+    console.log('🔍 No saved response found, trying Gemini AI...');
+    const aiResponse = await GeminiService.generateResponse(userMessage, this.conversationHistory);
+    
+    if (aiResponse) {
+      const response = `${aiResponse} ✨`;
+      this.conversationHistory.push(`Bot: ${response}`);
+      console.log('✅ Using Gemini AI response');
+      return response;
+    }
+
+    // Use smart fallback if AI fails
+    console.log('⚠️ Gemini AI failed, using smart fallback');
+    if (Math.random() > 0.3) { // 70% chance to use smart fallback
+      const fallbackResponse = GeminiService.getSmartFallback(userMessage);
+      const response = `${fallbackResponse} 💭`;
+      this.conversationHistory.push(`Bot: ${response}`);
+      return response;
+    }
     // Store unknown question
     await this.storeUnknownQuestion(userMessage);
     
-    return "I don't know how to answer that now.. I'll learn it in a few minuits 😅";
+    const response = "I don't know how to answer that now.. I'll learn it in a few minutes 😅";
+    this.conversationHistory.push(`Bot: ${response}`);
+    return response;
   }
 
   private async storeUnknownQuestion(question: string) {

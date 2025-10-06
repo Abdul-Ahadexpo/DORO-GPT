@@ -32,8 +32,9 @@ export function ChatWindow({ messages }: ChatWindowProps) {
                   <Bot size={32} className="text-purple-400" />
                 </div>
                 <h3 className="text-lg md:text-xl font-semibold mb-3 text-white">Welcome to SenTorial-CHAT!</h3>
-                <p className="text-sm md:text-base text-slate-300 leading-relaxed">Start a conversation by typing a message below.</p>
+                <p className="text-sm md:text-base text-slate-300 leading-relaxed">Start a conversation by typing a message below. I'm powered by Gemini AI!</p>
                 <div className="mt-4 text-xs text-slate-400">
+                  <p>✨ I can chat about anything naturally</p>
                   <p>✨ I can solve math problems</p>
                   <p>🔗 I can handle clickable links</p>
                   <p>🧠 I learn from your teachings</p>

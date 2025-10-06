@@ -15,7 +15,8 @@ export function ChatHeader({ onAdminClick }: ChatHeaderProps) {
           </div>
           <div>
             <h1 className="text-lg md:text-xl font-bold animate-fade-in">SenTorial-CHAT</h1>
-            <p className="text-slate-300 text-xs md:text-sm animate-fade-in">
+            <p className="text-slate-300 text-xs md:text-sm animate-fade-in flex items-center space-x-1">
+              <span>✨ Powered by Gemini AI •</span>
   Made By{" "}
   <a 
     href="https://www.facebook.com/Nazim.AbdulAhad" 
@@ -25,7 +26,7 @@ export function ChatHeader({ onAdminClick }: ChatHeaderProps) {
   >
     Abdul Ahad
   </a>
-</p>
+            </p>
           </div>
         </div>
         <button
