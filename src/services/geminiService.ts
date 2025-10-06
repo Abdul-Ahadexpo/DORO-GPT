@@ -1,10 +1,49 @@
+import { WebSearchService } from './webSearchService';
+
 export class GeminiService {
   private static readonly API_KEY = 'AIzaSyCFytxjsgQ12GNWZiWwoIZcgaCUi1hN0OI';
   private static readonly API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
+  // SenTorial website knowledge base
+  private static readonly SENTORIAL_KNOWLEDGE = `
+SenTorial Website Information:
+Main Website: https://sentorial.vercel.app/
+
+Key Pages & Features:
+- Custom Pre-order: https://sentorial.vercel.app/custom-preorder (Order custom candles)
+- Candle Customizer: https://sentorial.vercel.app/candle-customizer (Design your own candles)
+- Reviews: https://sentorial.vercel.app/reviews (Customer testimonials and feedback)
+- Profile: https://sentorial.vercel.app/profile (User account management)
+
+SenTorial is a premium candle company offering:
+- Custom handmade candles
+- Personalized scent combinations
+- High-quality wax and materials
+- Unique designs and customization options
+- Professional candle-making services
+
+Navigation Help:
+- Visit the main site to browse products
+- Use the customizer to design your perfect candle
+- Check reviews to see what customers say
+- Pre-order custom candles for special occasions
+- Manage your orders through your profile
+
+Always provide the relevant links when users ask about SenTorial services!
+`;
+
   static async generateResponse(userMessage: string, conversationHistory: string[] = []): Promise<string | null> {
     try {
       console.log('🤖 Calling Gemini AI for:', userMessage);
+
+      // Search site content for additional context
+      const siteContent = await WebSearchService.searchSiteContent(userMessage);
+      let additionalContext = '';
+      
+      if (siteContent) {
+        additionalContext = `\n\nAdditional context from SenTorial website: ${siteContent}`;
+        console.log('🌐 Found relevant site content');
+      }
 
       // Build context from recent conversation
       let context = '';
@@ -13,13 +52,21 @@ export class GeminiService {
       }
 
       // Create the prompt
-      const prompt = `${context}You are SenTorial-CHAT, a friendly and helpful AI assistant. Respond naturally and conversationally to: "${userMessage}"
+      const prompt = `${context}You are SenTorial-CHAT, a friendly and helpful AI assistant created by Abdul Ahad for SenTorial - a premium candle company. You can use markdown formatting in your responses (**bold**, *italic*, ~~strikethrough~~, \`code\`, ## headers, etc.).
+
+${this.SENTORIAL_KNOWLEDGE}${additionalContext}
+
+Respond naturally and conversationally to: "${userMessage}"
 
 Keep your response:
 - Conversational and friendly
 - Helpful and informative
-- Under 200 words
-- Natural, like talking to a friend`;
+- Under 300 words
+- Natural, like talking to a friend
+- Use markdown formatting when appropriate for emphasis
+- If you have relevant information from the SenTorial website, incorporate it naturally
+- Always provide relevant SenTorial links when discussing services or features
+- Help users navigate the website and understand the services offered`;
 
       const requestBody = {
         contents: [{
@@ -31,7 +78,7 @@ Keep your response:
           temperature: 0.7,
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 200,
+          maxOutputTokens: 300,
         },
         safetySettings: [
           {

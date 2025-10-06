@@ -1,5 +1,6 @@
 import React from 'react';
 import { Message } from '../types';
+import { MarkdownRenderer } from './MarkdownRenderer';
 
 // Function to detect and make URLs clickable
 function makeLinksClickable(text: string): React.ReactNode[] {
@@ -58,6 +59,7 @@ function preserveLineBreaks(text: string): React.ReactNode[] {
 
 export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
   const isUser = message.sender === 'user';
+  const isAIResponse = message.text.includes('✨');
   const time = new Date(message.timestamp).toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
@@ -88,9 +90,15 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
         }`}
       >
         {textWithoutImages && (
-          <p className="text-sm sm:text-base leading-relaxed mb-1 sm:mb-2 whitespace-pre-wrap break-words">
-            {preserveLineBreaks(textWithoutImages)}
-          </p>
+          <div className="text-sm sm:text-base leading-relaxed mb-1 sm:mb-2 break-words">
+            {isAIResponse && !isUser ? (
+              <MarkdownRenderer text={textWithoutImages} />
+            ) : (
+              <div className="whitespace-pre-wrap">
+                {preserveLineBreaks(textWithoutImages)}
+              </div>
+            )}
+          </div>
         )}
         
         {imageUrls.length > 0 && (
