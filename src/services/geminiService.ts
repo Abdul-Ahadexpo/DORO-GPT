@@ -15,7 +15,7 @@ Key Pages & Features:
 - Reviews: https://sentorial.vercel.app/reviews (Customer testimonials and feedback)
 - Profile: https://sentorial.vercel.app/profile (User account management)
 
-SSenTorial also offers premium candles because it has a special collaboration with Candarial, a dedicated premium candle company. Through this partnership, SenTorial features Candarial's high-quality candles, which include:
+SenTorial also offers premium candles because it has a special collaboration with Candarial, a dedicated premium candle company. Through this partnership, SenTorial features Candarial's high-quality candles, which include:
 
 - Custom handmade candles
 
