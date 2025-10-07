@@ -20,7 +20,7 @@ export function ChatWindow({ messages }: ChatWindowProps) {
   return (
     <div 
       ref={chatContainerRef}
-      className="flex-1 overflow-y-auto bg-gradient-to-b from-slate-900 to-slate-800 p-1 sm:p-2 md:p-4 pt-12 sm:pt-14 md:pt-16 lg:pt-20 pb-24 sm:pb-28 md:pb-32"
+      className="flex-1 overflow-y-auto bg-gradient-to-b from-slate-900 via-slate-850 to-slate-800 p-2 sm:p-3 md:p-4 pt-16 sm:pt-18 md:pt-20 lg:pt-24 pb-32 sm:pb-36 md:pb-40"
       style={{ 
         height: 'calc(100vh - 120px)', 
         scrollBehavior: 'smooth',
@@ -31,17 +31,29 @@ export function ChatWindow({ messages }: ChatWindowProps) {
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full animate-fade-in">
             <div className="text-center text-slate-400 max-w-xs sm:max-w-sm md:max-w-md mx-auto px-2 sm:px-4">
-              <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl border border-slate-700 hover:border-slate-600 transition-all duration-300 hover-lift animate-bounce-in">
-                <div className="bg-purple-500/20 p-2 sm:p-3 rounded-full w-fit mx-auto mb-3 sm:mb-4 animate-pulse-slow">
+              <div className="bg-gradient-to-br from-slate-800/90 to-slate-700/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl border border-slate-600/30 hover:border-slate-500/50 transition-all duration-500 hover-lift animate-bounce-in">
+                <div className="bg-gradient-to-br from-purple-500/30 to-blue-500/30 p-3 sm:p-4 rounded-2xl w-fit mx-auto mb-4 sm:mb-6 animate-pulse-slow">
                   <Bot size={24} className="sm:w-8 sm:h-8 md:w-8 md:h-8 text-purple-400" />
                 </div>
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3 text-white">Welcome to SenTorial-CHAT!</h3>
-                <p className="text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed mb-3 sm:mb-4">Start a conversation by typing a message below. I'm powered by Doro AI!</p>
-                <div className="text-xs sm:text-xs text-slate-400 space-y-1">
-                  <p>✨ I can chat about anything naturally</p>
-                  <p>✨ I can solve math problems</p>
-                  <p className="hidden sm:block">🔗 I can handle clickable links</p>
-                  <p>🧠 I learn from your teachings</p>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 sm:mb-4 text-white bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Welcome to SenTorial-CHAT!</h3>
+                <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed mb-4 sm:mb-6">Your intelligent assistant for SenTorial candles. Ask me anything!</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-400">
+                  <div className="flex items-center space-x-2 bg-slate-700/50 rounded-lg p-2">
+                    <span className="text-purple-400">🕯️</span>
+                    <span>Candle expertise</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-slate-700/50 rounded-lg p-2">
+                    <span className="text-blue-400">🧮</span>
+                    <span>Math calculations</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-slate-700/50 rounded-lg p-2">
+                    <span className="text-green-400">🔗</span>
+                    <span>Website navigation</span>
+                  </div>
+                  <div className="flex items-center space-x-2 bg-slate-700/50 rounded-lg p-2">
+                    <span className="text-yellow-400">🧠</span>
+                    <span>Learning & adapting</span>
+                  </div>
                 </div>
               </div>
             </div>

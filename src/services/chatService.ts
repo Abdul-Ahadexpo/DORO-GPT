@@ -1,6 +1,6 @@
 import { database } from '../config/firebase';
 import { ref, push, onValue, set, get, serverTimestamp } from 'firebase/database';
-import { Message, BotResponse, UnknownQuestion } from '../types';
+import { Message, BotResponse, UnknownQuestion, ProductData, SiteData } from '../types';
 import { DeviceService } from './deviceService';
 import { CalculationService } from './calculationService';
 import { GeminiService } from './geminiService';
@@ -14,6 +14,8 @@ export class ChatService {
   private responsesRef = ref(database, 'responses');
   private unknownQuestionsRef = ref(database, 'unknown_questions');
   private quickMessagesRef = ref(database, 'quick_messages');
+  private productsRef = ref(database, 'products');
+  private siteDataRef = ref(database, 'site_data');
 
   async initializeDefaultResponses() {
     const snapshot = await get(this.responsesRef);
@@ -89,7 +91,22 @@ export class ChatService {
 
     // Try Gemini AI for intelligent response
     console.log('🔍 No saved response found, trying Gemini AI...');
-    const aiResponse = await GeminiService.generateResponse(userMessage, this.conversationHistory);
+    
+    // Get additional data for context
+    const [productsSnapshot, siteDataSnapshot] = await Promise.all([
+      get(this.productsRef),
+      get(this.siteDataRef)
+    ]);
+    
+    const products = productsSnapshot.val() || {};
+    const siteData = siteDataSnapshot.val() || {};
+    
+    const aiResponse = await GeminiService.generateResponse(
+      userMessage, 
+      this.conversationHistory,
+      products,
+      siteData
+    );
     
     if (aiResponse) {
       const response = `${aiResponse} ✨`;
@@ -239,6 +256,103 @@ export class ChatService {
         await set(ref(database, `quick_messages/${keys[index]}`), null);
       }
     }
+  }
+
+  // Product Data Management
+  async addProduct(product: Omit<ProductData, 'id'>): Promise<string> {
+    const newProductRef = await push(this.productsRef, {
+      ...product,
+      lastUpdated: Date.now()
+    });
+    return newProductRef.key!;
+  }
+
+  async updateProduct(id: string, product: Partial<ProductData>): Promise<void> {
+    await set(ref(database, `products/${id}`), {
+      ...product,
+      lastUpdated: Date.now()
+    });
+  }
+
+  async deleteProduct(id: string): Promise<void> {
+    await set(ref(database, `products/${id}`), null);
+  }
+
+  onProductsChange(callback: (products: { [key: string]: ProductData }) => void) {
+    return onValue(this.productsRef, (snapshot) => {
+      const data = snapshot.val();
+      callback(data || {});
+    });
+  }
+
+  // Site Data Management
+  async addSiteData(data: Omit<SiteData, 'id'>): Promise<string> {
+    const newDataRef = await push(this.siteDataRef, {
+      ...data,
+      lastUpdated: Date.now()
+    });
+    return newDataRef.key!;
+  }
+
+  async updateSiteData(id: string, data: Partial<SiteData>): Promise<void> {
+    await set(ref(database, `site_data/${id}`), {
+      ...data,
+      lastUpdated: Date.now()
+    });
+  }
+
+  async deleteSiteData(id: string): Promise<void> {
+    await set(ref(database, `site_data/${id}`), null);
+  }
+
+  onSiteDataChange(callback: (data: { [key: string]: SiteData }) => void) {
+    return onValue(this.siteDataRef, (snapshot) => {
+      const data = snapshot.val();
+      callback(data || {});
+    });
+  }
+
+  // Bulk upload functions
+  async bulkUploadProducts(products: ProductData[]): Promise<void> {
+    const updates: { [key: string]: any } = {};
+    
+    products.forEach(product => {
+      const key = push(this.productsRef).key;
+      if (key) {
+        updates[key] = {
+          ...product,
+          lastUpdated: Date.now()
+        };
+      }
+    });
+
+    await set(this.productsRef, { ...await this.getCurrentProducts(), ...updates });
+  }
+
+  async bulkUploadSiteData(data: SiteData[]): Promise<void> {
+    const updates: { [key: string]: any } = {};
+    
+    data.forEach(item => {
+      const key = push(this.siteDataRef).key;
+      if (key) {
+        updates[key] = {
+          ...item,
+          lastUpdated: Date.now()
+        };
+      }
+    });
+
+    await set(this.siteDataRef, { ...await this.getCurrentSiteData(), ...updates });
+  }
+
+  private async getCurrentProducts(): Promise<{ [key: string]: ProductData }> {
+    const snapshot = await get(this.productsRef);
+    return snapshot.val() || {};
+  }
+
+  private async getCurrentSiteData(): Promise<{ [key: string]: SiteData }> {
+    const snapshot = await get(this.siteDataRef);
+    return snapshot.val() || {};
   }
 }
 

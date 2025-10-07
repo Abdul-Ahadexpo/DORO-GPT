@@ -59,10 +59,14 @@ function App() {
       />
 
       {isLoading && (
-        <div className="fixed bottom-16 sm:bottom-20 md:bottom-24 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 to-purple-700 text-white px-3 sm:px-4 py-2 rounded-full shadow-lg z-50 animate-bounce-in backdrop-blur-sm">
+        <div className="fixed bottom-24 sm:bottom-28 md:bottom-32 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 via-purple-700 to-blue-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-2xl shadow-2xl z-50 animate-bounce-in backdrop-blur-xl border border-purple-500/30">
           <div className="flex items-center space-x-2">
-            <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-b-2 border-white"></div>
-            <span className="text-xs sm:text-sm">SenTorial is thinking...</span>
+            <div className="flex space-x-1">
+              <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            </div>
+            <span className="text-sm sm:text-base font-medium">AI is thinking...</span>
           </div>
         </div>
       )}

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus, Trash2, MessageCircle, Brain, Users, Download, Upload, Edit2, Save, Zap } from 'lucide-react';
+import { X, Plus, Trash2, MessageCircle, Brain, Users, Download, Upload, CreditCard as Edit2, Save, Zap, Package, Database } from 'lucide-react';
 import { chatService } from '../services/chatService';
 import { FileService } from '../services/fileService';
 import { FileUploadHelp } from './FileUploadHelp';
-import { BotResponse, UnknownQuestion, Message } from '../types';
+import { BotResponse, UnknownQuestion, Message, ProductData, SiteData } from '../types';
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -11,14 +11,32 @@ interface AdminPanelProps {
 }
 
 export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
-  const [activeTab, setActiveTab] = useState<'responses' | 'unknown' | 'messages' | 'quick'>('responses');
+  const [activeTab, setActiveTab] = useState<'responses' | 'unknown' | 'messages' | 'quick' | 'products' | 'data'>('responses');
   const [responses, setResponses] = useState<BotResponse>({});
   const [unknownQuestions, setUnknownQuestions] = useState<UnknownQuestion[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [quickMessages, setQuickMessages] = useState<string[]>([]);
+  const [products, setProducts] = useState<{ [key: string]: ProductData }>({});
+  const [siteData, setSiteData] = useState<{ [key: string]: SiteData }>({});
   const [newQuestion, setNewQuestion] = useState('');
   const [newResponse, setNewResponse] = useState('');
   const [newQuickMessage, setNewQuickMessage] = useState('');
+  const [newProduct, setNewProduct] = useState<Omit<ProductData, 'id'>>({
+    name: '',
+    price: '',
+    description: '',
+    category: '',
+    inStock: true,
+    imageUrl: '',
+    features: [],
+    specifications: {}
+  });
+  const [newSiteData, setNewSiteData] = useState<Omit<SiteData, 'id' | 'lastUpdated'>>({
+    title: '',
+    content: '',
+    category: 'general',
+    tags: []
+  });
   const [editingResponse, setEditingResponse] = useState<string | null>(null);
   const [editQuestion, setEditQuestion] = useState('');
   const [editResponseText, setEditResponseText] = useState('');

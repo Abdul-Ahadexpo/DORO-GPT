@@ -20,30 +20,32 @@ export function QuickMessages({ onSendMessage }: QuickMessagesProps) {
   const visibleMessages = isExpanded ? quickMessages : quickMessages.slice(0, 3);
 
   return (
-    <div className="fixed bottom-14 sm:bottom-16 md:bottom-20 left-0 right-0 z-40 px-2 sm:px-3 md:px-4 animate-slide-in">
+    <div className="fixed bottom-20 sm:bottom-24 md:bottom-28 left-0 right-0 z-40 px-3 sm:px-4 md:px-5 animate-slide-in">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-slate-800/95 backdrop-blur-md border border-slate-700 rounded-t-xl p-2 sm:p-3 shadow-lg hover:shadow-xl transition-all duration-200">
-          <div className="flex items-center justify-between mb-1 sm:mb-2">
+        <div className="bg-gradient-to-r from-slate-800/95 to-slate-700/95 backdrop-blur-xl border border-slate-600/50 rounded-2xl p-3 sm:p-4 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
             <div className="flex items-center space-x-1 sm:space-x-2">
-              <Zap size={12} className="sm:w-4 sm:h-4 text-purple-400 animate-pulse-slow" />
-              <span className="text-white text-xs sm:text-sm font-medium">Quick Messages</span>
+              <div className="bg-gradient-to-r from-purple-500 to-blue-500 p-1 rounded-lg">
+                <Zap size={12} className="sm:w-4 sm:h-4 text-white" />
+              </div>
+              <span className="text-white text-xs sm:text-sm font-semibold">Quick Actions</span>
             </div>
             {quickMessages.length > 3 && (
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="text-slate-400 hover:text-white transition-all duration-200 hover-lift"
+                className="text-slate-400 hover:text-white transition-all duration-200 hover-lift bg-slate-700/50 rounded-lg p-1"
               >
                 {isExpanded ? <ChevronDown size={12} className="sm:w-4 sm:h-4" /> : <ChevronUp size={12} className="sm:w-4 sm:h-4" />}
               </button>
             )}
           </div>
           
-          <div className="flex flex-wrap gap-1 sm:gap-2">
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {visibleMessages.map((message, index) => (
               <button
                 key={index}
                 onClick={() => onSendMessage(message)}
-                className="bg-purple-600/20 hover:bg-purple-600/50 text-purple-300 hover:text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs transition-all duration-200 border border-purple-500/30 hover:border-purple-500/80 hover-lift animate-scale-in min-h-[32px] flex items-center"
+                className="bg-gradient-to-r from-purple-600/30 to-blue-600/30 hover:from-purple-600/60 hover:to-blue-600/60 text-purple-200 hover:text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm transition-all duration-300 border border-purple-500/20 hover:border-purple-400/60 hover-lift animate-scale-in min-h-[36px] flex items-center shadow-lg hover:shadow-xl backdrop-blur-sm"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <span className="truncate max-w-[120px] sm:max-w-none">{message}</span>
