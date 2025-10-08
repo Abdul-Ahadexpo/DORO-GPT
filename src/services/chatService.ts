@@ -75,7 +75,9 @@ export class ChatService {
 
     // Check for exact match first
     if (responses[normalizedMessage]) {
-      const response = responses[normalizedMessage];
+      const originalResponse = responses[normalizedMessage];
+      console.log('📝 Found exact match, enhancing with Gemini AI...');
+      const response = await GeminiService.enhanceResponse(originalResponse, userMessage);
       this.conversationHistory.push(`Bot: ${response}`);
       return response;
     }
@@ -83,7 +85,9 @@ export class ChatService {
     // Check for partial matches
     for (const key in responses) {
       if (normalizedMessage.includes(key) || key.includes(normalizedMessage)) {
-        const response = responses[key];
+        const originalResponse = responses[key];
+        console.log('🔍 Found partial match, enhancing with Gemini AI...');
+        const response = await GeminiService.enhanceResponse(originalResponse, userMessage);
         this.conversationHistory.push(`Bot: ${response}`);
         return response;
       }
