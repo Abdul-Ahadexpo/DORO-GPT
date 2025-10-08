@@ -180,7 +180,7 @@ Keep your response:
 
           topP: 0.95,
 
-          maxOutputTokens: 300,
+          maxOutputTokens: 380,
 
         },
 
