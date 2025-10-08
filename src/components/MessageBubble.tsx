@@ -78,29 +78,35 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
 
   return (
     <div
-      className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4 md:mb-6 px-3 md:px-0 ${
+      className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 ${
         isLatest ? (isUser ? 'animate-slide-in-right' : 'animate-slide-in-left') : ''
       }`}
     >
       <div
-        className={`max-w-[85%] sm:max-w-[75%] md:max-w-lg lg:max-w-xl xl:max-w-2xl rounded-3xl px-4 sm:px-5 py-3 sm:py-4 shadow-xl hover:shadow-2xl transition-all duration-300 hover-lift relative ${
+        className={`max-w-[80%] md:max-w-2xl rounded-2xl px-5 py-4 shadow-lg transition-all duration-300 relative ${
           isUser
-            ? 'bg-gradient-to-br from-purple-600 via-purple-700 to-purple-800 text-white ml-auto'
-            : 'bg-gradient-to-br from-slate-800 via-slate-750 to-slate-700 text-white border border-slate-600/50 mr-auto'
+            ? 'bg-gradient-to-br from-purple-600 to-blue-600 text-white ml-auto'
+            : 'bg-slate-800/60 backdrop-blur-xl text-white border border-slate-600/30 mr-auto'
         }`}
       >
-        {/* AI Badge for bot messages */}
+        {/* Enhanced AI Badge for bot messages */}
         {!isUser && (
-          <div className="flex items-center space-x-2 mb-2 pb-2 border-b border-slate-600/30">
-            <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+          <div className="flex items-center space-x-3 mb-3 pb-3 border-b border-slate-600/20">
+            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
               <span className="text-xs font-bold text-white">AI</span>
             </div>
-            <span className="text-xs text-slate-300 font-medium">SenTorial Assistant</span>
+            <div>
+              <span className="text-sm text-white font-semibold">SenTorial AI</span>
+              <div className="flex items-center space-x-1 mt-0.5">
+                <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
+                <span className="text-xs text-slate-400">Online</span>
+              </div>
+            </div>
           </div>
         )}
         
         {textWithoutImages && (
-          <div className="text-sm sm:text-base leading-relaxed mb-2 break-words">
+          <div className="text-base leading-relaxed mb-3 break-words">
             {isAIResponse && !isUser ? (
               <MarkdownRenderer text={textWithoutImages} />
             ) : (
@@ -112,7 +118,7 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
         )}
         
         {imageUrls.length > 0 && (
-          <div className="space-y-2 sm:space-y-3 animate-scale-in">
+          <div className="space-y-3 animate-scale-in">
             {imageUrls.map((imageUrl, index) => (
               <div key={index} className="relative group">
                 <img
@@ -136,14 +142,14 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
           </div>
         )}
         
-        <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/10">
-          <p className={`text-xs opacity-75 ${isUser ? 'text-purple-100' : 'text-slate-300'}`}>
+        <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/5">
+          <p className={`text-xs ${isUser ? 'text-purple-100/70' : 'text-slate-400'}`}>
             {time}
           </p>
           {!isUser && (
             <div className="flex items-center space-x-1">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-slate-400">AI Response</span>
+              <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
+              <span className="text-xs text-slate-500">AI</span>
             </div>
           )}
         </div>

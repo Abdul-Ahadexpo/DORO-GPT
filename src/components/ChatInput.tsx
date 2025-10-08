@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Paperclip, Smile } from 'lucide-react';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -64,44 +64,71 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-slate-900 via-slate-800/95 to-slate-800/90 backdrop-blur-xl border-t border-slate-700/50 p-3 sm:p-4 md:p-5 shadow-2xl animate-slide-in">
+    <div className="fixed bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-slate-900 via-slate-800/95 to-slate-800/90 backdrop-blur-xl border-t border-slate-700/50 p-6 shadow-2xl md:left-80">
       <div className="max-w-4xl mx-auto">
-        <form onSubmit={handleSubmit} className="flex items-end space-x-3 sm:space-x-4">
-          <div className="flex-1 relative">
-            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
+        <form onSubmit={handleSubmit} className="relative">
+          <div className="bg-slate-800/80 backdrop-blur-xl border border-slate-600/50 rounded-2xl shadow-2xl overflow-hidden">
+            <div className="flex items-end space-x-4 p-4">
+              {/* Attachment button */}
+              <button
+                type="button"
+                className="text-slate-400 hover:text-slate-300 transition-colors p-2 hover:bg-slate-700/50 rounded-lg"
+                disabled={disabled}
+              >
+                <Paperclip size={20} />
+              </button>
+              
+              {/* Input field */}
+              <div className="flex-1">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Message SenTorial AI..."
+                  disabled={disabled}
+                  className="w-full bg-transparent text-white placeholder-slate-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed text-base py-2"
+                  style={{ fontSize: '16px' }}
+                />
+              </div>
+              
+              {/* Emoji button */}
+              <button
+                type="button"
+                className="text-slate-400 hover:text-slate-300 transition-colors p-2 hover:bg-slate-700/50 rounded-lg"
+                disabled={disabled}
+              >
+                <Smile size={20} />
+              </button>
+              
+              {/* Send button */}
+              <button
+                type="submit"
+                disabled={disabled || !message.trim()}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-slate-600 disabled:to-slate-700 text-white p-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              >
+                <Send size={18} />
+              </button>
             </div>
-          <input
-            ref={inputRef}
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-              placeholder="Ask me anything about SenTorial..."
-            disabled={disabled}
-              className="w-full border-2 border-slate-600/50 rounded-2xl pl-12 pr-4 py-3.5 sm:py-4 bg-slate-700/80 text-white placeholder-slate-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-base min-h-[52px] shadow-lg backdrop-blur-sm"
-            style={{ fontSize: '16px' }}
-          />
           </div>
-          <button
-            type="submit"
-            disabled={disabled || !message.trim()}
-            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white p-3.5 sm:p-4 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-xl hover:shadow-2xl hover-lift focus-ring min-h-[52px] min-w-[52px] flex items-center justify-center group"
-          >
-            <Send size={20} className="sm:w-5 sm:h-5 group-hover:translate-x-0.5 transition-transform duration-200" />
-          </button>
         </form>
         
-        {/* Typing indicator */}
+        {/* Footer info */}
+        <div className="flex items-center justify-center mt-4 text-slate-500 text-xs space-x-4">
+          <span>SenTorial AI can make mistakes. Consider checking important information.</span>
+        </div>
+        
+        {/* Typing indicator - now positioned above input */}
         {disabled && (
-          <div className="flex items-center justify-center mt-3 text-slate-400 text-sm">
-            <div className="flex space-x-1">
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-xl border border-slate-600/50 rounded-2xl px-6 py-3 shadow-xl">
+            <div className="flex items-center space-x-3">
+              <div className="flex space-x-1">
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              </div>
+              <span className="text-slate-300 text-sm font-medium">SenTorial AI is thinking...</span>
             </div>
-            <span className="ml-2">AI is thinking...</span>
           </div>
         )}
       </div>

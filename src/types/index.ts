@@ -38,3 +38,11 @@ export interface SiteData {
   tags: string[];
   lastUpdated: number;
 }
+
+export interface Chat {
+  id: string;
+  title: string;
+  messages: Message[];
+  createdAt: number;
+  updatedAt: number;
+}
