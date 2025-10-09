@@ -50,12 +50,16 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
     const unsubscribeUnknown = chatService.onUnknownQuestionsChange(setUnknownQuestions);
     const unsubscribeMessages = chatService.onMessagesChange(setMessages);
     const unsubscribeQuick = chatService.onQuickMessagesChange(setQuickMessages);
+    const unsubscribeProducts = chatService.onProductsChange(setProducts);
+    const unsubscribeSiteData = chatService.onSiteDataChange(setSiteData);
 
     return () => {
       unsubscribeResponses();
       unsubscribeUnknown();
       unsubscribeMessages();
       unsubscribeQuick();
+      unsubscribeProducts();
+      unsubscribeSiteData();
     };
   }, [isOpen]);
 

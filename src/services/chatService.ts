@@ -333,6 +333,14 @@ export class ChatService {
     await set(this.productsRef, { ...await this.getCurrentProducts(), ...updates });
   }
 
+  static onSiteDataChange(callback: (siteData: { [key: string]: SiteData }) => void): () => void {
+    const siteDataRef = ref(database, 'siteData');
+    return onValue(siteDataRef, (snapshot) => {
+      const data = snapshot.val() || {};
+      callback(data);
+    });
+  }
+
   async bulkUploadSiteData(data: SiteData[]): Promise<void> {
     const updates: { [key: string]: any } = {};
     
