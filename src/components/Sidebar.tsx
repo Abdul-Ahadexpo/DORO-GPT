@@ -47,21 +47,22 @@ export function Sidebar({
       <div className={`fixed left-0 top-0 h-full w-80 bg-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 z-50 transform transition-transform duration-300 ease-in-out ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       } md:translate-x-0 md:relative md:z-auto`}>
+        
         {/* Header */}
-        <div className="p-6 border-b border-slate-700/50 bg-gradient-to-r from-purple-600/20 to-blue-600/20 transition-all duration-300 hover:from-purple-600/30 hover:to-blue-600/30">
+        <div className="p-4 border-b border-slate-700/50">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:rotate-12">
+              <div className="bg-gradient-to-br from-purple-500 to-blue-500 p-2 rounded-xl">
                 <Bot size={20} className="text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white transition-all duration-300 hover:text-purple-300">SenTorial</h1>
-                <p className="text-sm text-slate-400 transition-all duration-300 hover:text-blue-300">AI Assistant</p>
+                <h1 className="text-white font-bold text-lg">SenTorial</h1>
+                <p className="text-slate-400 text-xs">AI Assistant</p>
               </div>
             </div>
             <button
               onClick={onToggle}
-              className="md:hidden text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-700/50 transition-all duration-200 hover:scale-110"
+              className="md:hidden text-slate-400 hover:text-white transition-colors p-1"
             >
               <X size={20} />
             </button>
@@ -74,7 +75,7 @@ export function Sidebar({
             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed text-white py-3 px-4 rounded-xl flex items-center justify-center space-x-2 transition-all duration-200 hover:shadow-lg"
           >
             <Plus size={18} />
-            <span>New Chat</span>
+            <span className="font-medium">New Chat</span>
             <span className="text-xs bg-white/20 px-2 py-1 rounded-full">
               {chats.length}/4
             </span>
@@ -100,7 +101,7 @@ export function Sidebar({
                 className={`group relative p-3 rounded-xl cursor-pointer transition-all duration-200 hover:bg-slate-800/60 ${
                   activeChat?.id === chat.id 
                     ? 'bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30' 
-                    : 'hover:bg-slate-700/50'
+                    : 'hover:bg-slate-800/40'
                 }`}
                 onClick={() => onChatSelect(chat.id)}
                 onMouseEnter={() => setHoveredChat(chat.id)}
@@ -108,29 +109,25 @@ export function Sidebar({
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-gradient-to-r from-slate-600 to-slate-700 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:from-purple-600 group-hover:to-blue-600">
-                        <MessageSquare size={14} className={`${
-                          activeChat?.id === chat.id ? 'text-purple-400' : 'text-slate-500'
-                        }`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className={`text-sm font-medium truncate transition-all duration-300 ${
-                          activeChat?.id === chat.id ? 'text-white' : 'text-slate-300'
-                        }`}>
-                          {chat.title}
-                        </h4>
-                        <p className="text-xs text-slate-400 transition-all duration-300 group-hover:text-blue-300">
-                          {chat.messages.length} messages • {new Date(chat.updatedAt).toLocaleDateString()}
-                        </p>
-                      </div>
+                    <div className="flex items-center space-x-2 mb-1">
+                      <MessageSquare size={14} className={`${
+                        activeChat?.id === chat.id ? 'text-purple-400' : 'text-slate-500'
+                      }`} />
+                      <h4 className={`font-medium text-sm truncate ${
+                        activeChat?.id === chat.id ? 'text-white' : 'text-slate-300'
+                      }`}>
+                        {chat.title}
+                      </h4>
                     </div>
+                    <p className="text-xs text-slate-500">
+                      {chat.messages.length} messages • {new Date(chat.updatedAt).toLocaleDateString()}
+                    </p>
                   </div>
                   
                   {(hoveredChat === chat.id || activeChat?.id === chat.id) && chats.length > 1 && (
                     <button
                       onClick={(e) => handleDeleteChat(e, chat.id)}
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-400 p-1 rounded transition-all duration-300 hover:scale-125 transform"
+                      className="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-red-400 transition-all duration-200 p-1 hover:bg-red-500/10 rounded"
                     >
                       <Trash2 size={12} />
                     </button>
@@ -142,7 +139,7 @@ export function Sidebar({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-700/50 bg-slate-800/50 transition-all duration-300 hover:bg-slate-800/70">
+        <div className="p-4 border-t border-slate-700/50">
           <button
             onClick={onAdminClick}
             className="w-full bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 hover:text-white py-3 px-4 rounded-xl flex items-center justify-center space-x-2 transition-all duration-200"
@@ -152,10 +149,7 @@ export function Sidebar({
           </button>
           
           <div className="mt-3 text-center">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse transition-all duration-300 hover:scale-150"></div>
-              <span className="text-xs text-slate-400 transition-all duration-300 hover:text-green-400">Online</span>
-            </div>
+            <p className="text-slate-500 text-xs">Made by</p>
             <a 
               href="https://www.facebook.com/Nazim.AbdulAhad" 
               className="text-purple-400 hover:text-purple-300 text-xs font-medium transition-colors"

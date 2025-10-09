@@ -77,7 +77,11 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
   });
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 transition-all duration-500 ease-out animate-fade-in-up`}>
+    <div
+      className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-6 ${
+        isLatest ? (isUser ? 'animate-slide-in-right' : 'animate-slide-in-left') : ''
+      }`}
+    >
       <div
         className={`max-w-[80%] md:max-w-2xl rounded-2xl px-5 py-4 shadow-lg transition-all duration-300 relative ${
           isUser
@@ -127,7 +131,7 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
                     const target = e.target as HTMLImageElement;
                     target.style.display = 'none';
                     // Show the URL as text if image fails to load
-                    const fallback = document.createElement('div');
+                    const fallback = document.createElement('p');
                     fallback.textContent = imageUrl;
                     fallback.className = 'text-xs text-gray-300 bg-gray-700 p-2 rounded break-all';
                     target.parentNode?.appendChild(fallback);
@@ -138,9 +142,7 @@ export function MessageBubble({ message, isLatest }: MessageBubbleProps) {
           </div>
         )}
         
-        <div className={`text-xs mt-2 opacity-70 transition-all duration-300 group-hover:opacity-100 ${
-          isUser ? 'text-purple-100/70' : 'text-slate-400'
-        }`}>
+        <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/5">
           <p className={`text-xs ${isUser ? 'text-purple-100/70' : 'text-slate-400'}`}>
             {time}
           </p>
