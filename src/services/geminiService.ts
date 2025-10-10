@@ -1,3 +1,4 @@
+
 import { WebSearchService } from './webSearchService';
 import { ProductData, SiteData } from '../types';
 
@@ -5,7 +6,7 @@ import { ProductData, SiteData } from '../types';
 
 export class GeminiService {
 
-  private static readonly API_KEY = 'AIzaSyCFytxjsgQ12GNWZiWwoIZcgaCUi1hN0OI';
+  private static readonly API_KEY = 'AIzaSyDH1rBne7OFRcdcCVf9TvQCUkWgmGTMOjc';
 
   private static readonly API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
@@ -130,7 +131,7 @@ Always provide relevant links when discussing SenTorial services.
 
       // Create the prompt
 
-      const prompt = `${context}You are SenTorial-CHAT, a friendly and helpful AI assistant created by Abdul Ahad for SenTorial - an online shop for beyblades and anime. You can use markdown formatting in your responses (**bold**, *italic*, ~~strikethrough~~, \`code\`, ## headers, etc.).
+      const prompt = `${context}You are SenTorial-CHAT, a friendly and helpful AI assistant created by Abdul Ahad for SenTorial - a online shop for beyblades and anime. You can use markdown formatting in your responses (**bold**, *italic*, ~~strikethrough~~, \`code\`, ## headers, etc.).
 
 
 
@@ -180,7 +181,7 @@ Keep your response:
 
           topP: 0.95,
 
-          maxOutputTokens: 380,
+          maxOutputTokens: 300,
 
         },
 
@@ -290,89 +291,7 @@ Keep your response:
 
   }
 
-  static async enhanceResponse(originalResponse: string, userQuestion: string): Promise<string> {
-    try {
-      console.log('🎨 Enhancing response with Gemini AI...');
 
-      const prompt = `You are SenTorial-CHAT, a friendly AI assistant for SenTorial. 
-
-I have a pre-written response to a user's question, but I want you to enhance it to make it more natural, helpful, and engaging while keeping the core information intact.
-
-User's Question: "${userQuestion}"
-Original Response: "${originalResponse}"
-
-Please enhance this response by:
-- Making it more conversational and natural
-- Adding helpful context or suggestions when appropriate
-- Keeping all important information from the original
-- Making it sound more like a friendly AI assistant
-- Using markdown formatting when it improves readability
-- Keeping it concise but more engaging
-
-Enhanced response:`;
-
-      const requestBody = {
-        contents: [{
-          parts: [{
-            text: prompt
-          }]
-        }],
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 200,
-        },
-        safetySettings: [
-          {
-            category: "HARM_CATEGORY_HARASSMENT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          },
-          {
-            category: "HARM_CATEGORY_HATE_SPEECH",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          },
-          {
-            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          },
-          {
-            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-          }
-        ]
-      };
-
-      const response = await fetch(this.API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-goog-api-key': this.API_KEY,
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      if (!response.ok) {
-        console.warn('⚠️ Failed to enhance response, using original');
-        return originalResponse;
-      }
-
-      const data = await response.json();
-
-      if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
-        const enhancedResponse = data.candidates[0].content.parts[0].text.trim();
-        console.log('✨ Response enhanced successfully');
-        return enhancedResponse;
-      }
-
-      console.warn('⚠️ Unexpected response format, using original');
-      return originalResponse;
-
-    } catch (error) {
-      console.error('❌ Error enhancing response:', error);
-      return originalResponse; // Fallback to original response
-    }
-  }
 
   static getSmartFallback(userMessage: string): string {
 
@@ -482,7 +401,7 @@ Enhanced response:`;
     
     const scoredData = Object.values(siteData).map(data => {
       let score = 0;
-      const searchText = `${data.title} ${data.content} ${data.tags.join(' ')}`.toLowerCase();
+      const searchText = `${data.title} ${data.content} ${(data.tags || []).join(' ')}`.toLowerCase();
       
       queryWords.forEach(word => {
         if (searchText.includes(word)) {
@@ -492,7 +411,7 @@ Enhanced response:`;
       
       // Boost score for exact matches in title or tags
       if (data.title.toLowerCase().includes(queryLower)) score += 3;
-      if (data.tags.some(tag => tag.toLowerCase().includes(queryLower))) score += 2;
+      if ((data.tags || []).some(tag => tag.toLowerCase().includes(queryLower))) score += 2;
       
       return { data, score };
     });
