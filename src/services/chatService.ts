@@ -75,9 +75,7 @@ export class ChatService {
 
     // Check for exact match first
     if (responses[normalizedMessage]) {
-      const originalResponse = responses[normalizedMessage];
-      console.log('📝 Found exact match, enhancing with Gemini AI...');
-      const response = await GeminiService.enhanceResponse(originalResponse, userMessage);
+      const response = responses[normalizedMessage];
       this.conversationHistory.push(`Bot: ${response}`);
       return response;
     }
@@ -85,9 +83,7 @@ export class ChatService {
     // Check for partial matches
     for (const key in responses) {
       if (normalizedMessage.includes(key) || key.includes(normalizedMessage)) {
-        const originalResponse = responses[key];
-        console.log('🔍 Found partial match, enhancing with Gemini AI...');
-        const response = await GeminiService.enhanceResponse(originalResponse, userMessage);
+        const response = responses[key];
         this.conversationHistory.push(`Bot: ${response}`);
         return response;
       }
@@ -318,7 +314,8 @@ export class ChatService {
 
   // Bulk upload functions
   async bulkUploadProducts(products: ProductData[]): Promise<void> {
-    const updates: { [key: string]: any } = {};
+    const currentProducts = await this.getCurrentProducts();
+    const updates: { [key: string]: any } = { ...currentProducts };
     
     products.forEach(product => {
       const key = push(this.productsRef).key;
@@ -330,11 +327,12 @@ export class ChatService {
       }
     });
 
-    await set(this.productsRef, { ...await this.getCurrentProducts(), ...updates });
+    await set(this.productsRef, updates);
   }
 
   async bulkUploadSiteData(data: SiteData[]): Promise<void> {
-    const updates: { [key: string]: any } = {};
+    const currentData = await this.getCurrentSiteData();
+    const updates: { [key: string]: any } = { ...currentData };
     
     data.forEach(item => {
       const key = push(this.siteDataRef).key;
@@ -346,7 +344,7 @@ export class ChatService {
       }
     });
 
-    await set(this.siteDataRef, { ...await this.getCurrentSiteData(), ...updates });
+    await set(this.siteDataRef, updates);
   }
 
   private async getCurrentProducts(): Promise<{ [key: string]: ProductData }> {

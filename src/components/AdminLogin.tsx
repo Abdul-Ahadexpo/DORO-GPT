@@ -16,7 +16,7 @@ export function AdminLogin({ onLogin, isOpen, onClose }: AdminLoginProps) {
     e.preventDefault();
     
     // Simple password check - in production, use proper authentication
-    if (password === '69') {
+    if (password === '269') {
       onLogin();
       setPassword('');
       setError('');

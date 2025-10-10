@@ -50,12 +50,16 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
     const unsubscribeUnknown = chatService.onUnknownQuestionsChange(setUnknownQuestions);
     const unsubscribeMessages = chatService.onMessagesChange(setMessages);
     const unsubscribeQuick = chatService.onQuickMessagesChange(setQuickMessages);
+    const unsubscribeProducts = chatService.onProductsChange(setProducts);
+    const unsubscribeSiteData = chatService.onSiteDataChange(setSiteData);
 
     return () => {
       unsubscribeResponses();
       unsubscribeUnknown();
       unsubscribeMessages();
       unsubscribeQuick();
+      unsubscribeProducts();
+      unsubscribeSiteData();
     };
   }, [isOpen]);
 
@@ -618,6 +622,18 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
                         </div>
                         <p className="text-gray-400 text-sm mb-1">{product.category}</p>
                         <p className="text-gray-300 text-sm">{product.description}</p>
+                        {Array.isArray(product.features) && product.features.length > 0 && (
+                          <div className="mt-2">
+                            <p className="text-gray-400 text-xs mb-1">Features:</p>
+                            <div className="flex flex-wrap gap-1">
+                              {product.features.map((feature, index) => (
+                                <span key={index} className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300">
+                                  {feature}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         {product.imageUrl && (
                           <img src={product.imageUrl} alt={product.name} className="w-16 h-16 object-cover rounded mt-2" />
                         )}
@@ -725,7 +741,7 @@ export function AdminPanel({ isOpen, onClose }: AdminPanelProps) {
                           </span>
                         </div>
                         <p className="text-gray-300 text-sm mb-2">{data.content}</p>
-                        {data.tags.length > 0 && (
+                        {Array.isArray(data.tags) && data.tags.length > 0 && (
                           <div className="flex flex-wrap gap-1">
                             {data.tags.map((tag, index) => (
                               <span key={index} className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300">

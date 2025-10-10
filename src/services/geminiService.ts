@@ -86,24 +86,24 @@ Always provide relevant links when discussing SenTorial services.
 
       // Add product data context
       let productContext = '';
-      const productEntries = Object.entries(products);
+      const productEntries = Object.entries(products || {});
       if (productEntries.length > 0) {
         const relevantProducts = this.findRelevantProducts(userMessage, products);
         if (relevantProducts.length > 0) {
-          productContext = `\n\nAvailable Products:\n${relevantProducts.map(p => 
-            `- ${p.name}: ${p.price} (${p.category}) - ${p.description}${p.inStock ? ' [In Stock]' : ' [Out of Stock]'}`
+          productContext = `\n\nAvailable Products from SenTorial:\n${relevantProducts.map(p => 
+            `- **${p.name}**: ${p.price} (${p.category}) - ${p.description}${p.inStock ? ' ✅ In Stock' : ' ❌ Out of Stock'}${p.features && p.features.length > 0 ? `\n  Features: ${p.features.join(', ')}` : ''}`
           ).join('\n')}`;
         }
       }
 
       // Add site data context
       let dataContext = '';
-      const dataEntries = Object.entries(siteData);
+      const dataEntries = Object.entries(siteData || {});
       if (dataEntries.length > 0) {
         const relevantData = this.findRelevantSiteData(userMessage, siteData);
         if (relevantData.length > 0) {
-          dataContext = `\n\nRelevant Information:\n${relevantData.map(d => 
-            `- ${d.title}: ${d.content}`
+          dataContext = `\n\nRelevant SenTorial Information:\n${relevantData.map(d => 
+            `- **${d.title}** (${d.category}): ${d.content}${d.tags && d.tags.length > 0 ? `\n  Tags: ${d.tags.join(', ')}` : ''}`
           ).join('\n')}`;
         }
       }
